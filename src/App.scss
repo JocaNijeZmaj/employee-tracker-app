@@ -1,0 +1,29 @@
+:root {
+  --blue: #B9F3FC;
+  --blue2: #AEE2FF;
+  --blue3: #72b9e7;
+  --blue4: #FEDEFF;
+}
+*{ 
+    font-family:'Courier New', Courier, monospace;
+}
+
+header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    h1{
+        max-width: 350px;
+        text-align: center;
+    }
+}
+
+.logo {
+    max-width: 200px;
+}
+
+
+
+.leaderboard {
+    border: 1px solid black;
+}
