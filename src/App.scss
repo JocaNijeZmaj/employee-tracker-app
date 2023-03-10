@@ -4,26 +4,50 @@
   --blue3: #72b9e7;
   --blue4: #FEDEFF;
 }
-*{ 
+* { 
     font-family:'Courier New', Courier, monospace;
 }
 
-header{
+header {
     display: flex;
     justify-content: center;
     align-items: center;
-    h1{
+    h1 {
         max-width: 350px;
         text-align: center;
     }
-}
+    nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin: 2rem;
+        a{
+            text-decoration: none;
+            color: black;
+            font-size: 1.2rem;
+            transition: all 0.5s ease-in-out;
+            font-weight: 600;
+        }
+        a.active{
+            text-decoration: underline;
 
+            scale: 1.1;
+        }
+        a:hover {
+            opacity: 0.8;
+            scale: 1.1;
+        }
+    }
+}
 .logo {
     max-width: 200px;
 }
-
-
-
 .leaderboard {
     border: 1px solid black;
+}
+main {
+    border: 1px solid black;
+    margin: 2rem;
+    height: 50vh;
+    padding: 1rem;
 }
