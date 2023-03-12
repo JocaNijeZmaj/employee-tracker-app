@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import  { db }  from "../firebase-config";
-import { collection, getDocs , addDoc, updateDoc, doc} from "firebase/firestore"
+import { collection, getDocs , addDoc, updateDoc, doc, deleteDoc} from "firebase/firestore"
 import "./manage-employees.scss";
 import { Employee } from '../entities';
 
@@ -82,7 +82,7 @@ export default function ManageEmployees() {
 
         //edit employee
 
-      const updateEmployee = async (id: any) => {
+      const updateEmployee = async (id: string ) => {
             handleShowEdit();
             setEmployees(
               employees.map((employee) => {
@@ -114,7 +114,13 @@ export default function ManageEmployees() {
         setShowEdit((current) => !current);
       }
 
-      const deleteEmployee = () => {}
+      const deleteEmployee =  async (id: string) => {
+        const employeeDoc = doc(db, "employees", id);
+        setEmployees(
+        employees.filter((val) => {
+          return val.id != id;}))
+        await deleteDoc(employeeDoc);
+      }
 
     return (
       <div>
@@ -298,7 +304,7 @@ export default function ManageEmployees() {
                             <button
                               className="createBtn"
                               onClick={() => {
-                                updateEmployee(employee.id);
+                                updateEmployee(employee.id as string);
                               }}
                             >
                               Update
@@ -315,9 +321,9 @@ export default function ManageEmployees() {
                       {!showEdit && (
                         <button
                           className="deleteBtn"
-                          // onClick={() => {
-                          //   deleteEmployee(employee.id);
-                          // }}
+                          onClick={() => {
+                            deleteEmployee(employee.id as string);
+                          }}
                         >
                           Delete
                         </button>
