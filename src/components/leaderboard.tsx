@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import 'leaderboard.scss';
 
 export default function Leaderboard() {
   return (

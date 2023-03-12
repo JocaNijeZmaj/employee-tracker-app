@@ -1,9 +1,9 @@
 export interface Employee {
-  id: string;
+  id?: string;
   firstName: string;
   lastName: string;
   email: string;
-  phoneNumber: string;
+  phoneNumber: number;
   dob: number;
   salary: number;
 }
@@ -12,6 +12,6 @@ export interface Task {
     title: string,
     description: string,
     assign: string,
-    dueDate: Date,
+    dueDate: number,
     isDone: boolean
 }
