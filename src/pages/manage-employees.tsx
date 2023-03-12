@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import  { db }  from "../firebase-config";
-import { collection, getDocs , addDoc} from "firebase/firestore"
+import { collection, getDocs , addDoc, updateDoc, doc} from "firebase/firestore"
 import "./manage-employees.scss";
 import { Employee } from '../entities';
 
@@ -15,19 +15,21 @@ export default function ManageEmployees() {
     const [newEmail, setNewEmail] = useState("");
     const [newSalary, setNewSalary] = useState(0);
 
-    const [formValues, setFormValues] = useState({
-      newFirstName,
-      newLastName,
-      newDob,
-      newPhone,
-      newEmail,
-      newSalary
-    });
+    const [employees, setEmployees] = useState<Employee[]>([]);
+
+    const [editFirstName, setEditFirstName] = useState('');
+    const [editLastName, setEditLastName] = useState("");
+    const [editDob, setEditDob] = useState(0);
+    const [editPhone, setEditPhone] = useState(0);
+    const [editEmail, setEditEmail] = useState("");
+    const [editSalary, setEditSalary] = useState(0);
+
+    
 
     let [showCreateEmployee, setShowCreateEmployee] = useState(false);
     let [showEdit, setShowEdit] = useState(false);
-    const [employees, setEmployees] = useState<Employee[]>([]);
     const employeesCollectionRef = collection(db, "employees")
+    const [isDisabled, setIsDisabled] = useState(true);
 
     //getting all employees
     useEffect(() => {
@@ -45,7 +47,6 @@ export default function ManageEmployees() {
       const handleShowCreateEmployee = () => {
         setShowCreateEmployee((current) => !current);
       };
-
 
       const createEmployee = async () => {
         await addDoc(employeesCollectionRef, {
@@ -70,12 +71,50 @@ export default function ManageEmployees() {
         handleShowCreateEmployee();
       };
 
+        const someSmallValidation = (event:  React.ChangeEvent<HTMLInputElement>) => {
+          setNewLastName(event.target.value);
+          if (event.target.value.trim().length < 1) {
+            setIsDisabled(true);
+          } else {
+            setIsDisabled(false);
+          }
+        };
+
+        //edit employee
+
+      const updateEmployee = async (id: any) => {
+            handleShowEdit();
+            setEmployees(
+              employees.map((employee) => {
+                return employee.id === id
+                  ? {
+                      firstName: editFirstName,
+                      lastName: editLastName,
+                      email: editEmail,
+                      phoneNumber: editPhone,
+                      dob: editDob,
+                      salary: editSalary,
+                    }
+                  : employee;
+              })
+            );
+        const employeeDoc = doc(db, "employees", id);
+        const updatedEmployee = {
+          firstName: editFirstName,
+          lastName: editLastName,
+          email: editEmail,
+          phoneNumber: editPhone,
+          dob: editDob,
+          salary: editSalary,
+        };
+        await updateDoc(employeeDoc, updatedEmployee);
+      };
 
       const handleShowEdit = () => {
         setShowEdit((current) => !current);
       }
 
-
+      const deleteEmployee = () => {}
 
     return (
       <div>
@@ -90,34 +129,31 @@ export default function ManageEmployees() {
               <input
                 placeholder="First name"
                 required
-                value={formValues.newFirstName}
                 onChange={(event) => {
-                  setNewFirstName(event.target.value);
+                  someSmallValidation(event);
                 }}
               />
               <input
                 placeholder="Last name"
                 required
-                value={formValues.newLastName}
                 onChange={(event) => {
-                  setNewLastName(event.target.value);
+                  setNewFirstName(event.target.value);
                 }}
               />
               <input
                 type="date"
                 required
-                value={formValues.newDob}
                 placeholder="Date of birth"
                 onChange={(event) => {
                   setNewDob(
                     new Date(event.target.value).getTime() //Date Stored in Unix format/ timestamp
                   );
+
                 }}
               />
               <input
                 type="email"
                 required
-                value={formValues.newEmail}
                 placeholder="Email"
                 pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
                 onChange={(event) => {
@@ -127,7 +163,6 @@ export default function ManageEmployees() {
               <input
                 placeholder="Phone"
                 required
-                value={formValues.newPhone}
                 onChange={(event) => {
                   setNewPhone(+event.target.value);
                 }}
@@ -135,7 +170,6 @@ export default function ManageEmployees() {
               <input
                 type="number"
                 required
-                value={formValues.newSalary}
                 placeholder="Salary"
                 onChange={(event) => {
                   setNewSalary(+event.target.value);
@@ -148,7 +182,11 @@ export default function ManageEmployees() {
                 >
                   Exit
                 </button>
-                <button className="createBtn" onClick={createEmployee}>
+                <button
+                  className="createBtn"
+                  disabled={isDisabled}
+                  onClick={createEmployee}
+                >
                   Create
                 </button>
               </div>
@@ -170,56 +208,120 @@ export default function ManageEmployees() {
               {employees.map((employee, key) => {
                 return (
                   <tr className="active-row" key={employee.id}>
-                    <td>{employee.firstName}</td>
-                    <td>{employee.lastName}</td>
                     <td>
-                      {new Intl.DateTimeFormat("en-US", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                      }).format(employee.dob)}
+                      {!showEdit && employee.firstName}
+                      {showEdit && (
+                        <input
+                          type="text"
+                          placeholder={employee.firstName}
+                          onChange={(event) => {
+                            setEditFirstName(event.target.value);
+                          }}
+                        />
+                      )}
                     </td>
-                    <td>{employee.email}</td>
-                    <td>{employee.phoneNumber}</td>
-                    <td>{employee.salary}</td>
+
+                    <td>
+                      {!showEdit && employee.lastName}
+                      {showEdit && (
+                        <input
+                          type="text"
+                          placeholder={employee.lastName}
+                          onChange={(event) => {
+                            setEditLastName(event.target.value);
+                          }}
+                        />
+                      )}
+                    </td>
+
+                    <td>
+                      {!showEdit &&
+                        new Intl.DateTimeFormat("en-US", {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                        }).format(employee.dob)}
+                      {showEdit && (
+                        <input
+                          type="date"
+                          onChange={(event) => {
+                            setEditDob(new Date(event.target.value).getTime());
+                          }}
+                        />
+                      )}
+                    </td>
+                    <td>
+                      {!showEdit && employee.email}
+                      {showEdit && (
+                        <input
+                          type="email"
+                          placeholder={employee.email}
+                          onChange={(event) => {
+                            setEditEmail(event.target.value);
+                          }}
+                        />
+                      )}
+                    </td>
+                    <td>
+                      {!showEdit && employee.phoneNumber}
+                      {showEdit && (
+                        <input
+                          type="text"
+                          placeholder="phone"
+                          onChange={(event) => {
+                            setEditPhone(+event.target.value);
+                          }}
+                        />
+                      )}
+                    </td>
+                    <td>
+                      {!showEdit && employee.salary}
+                      {showEdit && (
+                        <input
+                          type="text"
+                          placeholder="new salary"
+                          onChange={(event) => {
+                            setEditSalary(+event.target.value);
+                          }}
+                        />
+                      )}
+                    </td>
                     <td>
                       {!showEdit && (
-                        <button onClick={handleShowEdit}>Edit</button>
+                        <button className="createBtn" onClick={handleShowEdit}>
+                          Edit
+                        </button>
                       )}
-                      {/* {showEdit && (
+                      {showEdit && (
                         <div>
-                          <input
-                            type="text"
-                            placeholder={employee.firstName}
-                            onChange={(event) => {
-                              setNewName(event.target.value);
-                            }}
-                          />
-                          <button
-                            onClick={() => {
-                              updateLastName(employee.id);
-                            }}
-                          >
-                            Update
-                          </button>{" "}
-                          <button
-                            className="deleteBtn"
-                            onClick={handleShowEdit}
-                          >
-                            X
-                          </button>
+                          <div>
+                            <button
+                              className="createBtn"
+                              onClick={() => {
+                                updateEmployee(employee.id);
+                              }}
+                            >
+                              Update
+                            </button>{" "}
+                            <button
+                              className="deleteBtn"
+                              onClick={handleShowEdit}
+                            >
+                              X
+                            </button>
+                          </div>
                         </div>
                       )}
                       {!showEdit && (
                         <button
                           className="deleteBtn"
-                          onClick={() => {
-                            deleteEmployee(employee.id);
-                          }}
+                          // onClick={() => {
+                          //   deleteEmployee(employee.id);
+                          // }}
                         >
                           Delete
                         </button>
-                      )} */}
+                      )}
                     </td>
                   </tr>
                 );

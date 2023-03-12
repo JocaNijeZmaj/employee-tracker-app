@@ -47,13 +47,15 @@
 }
 .createBtn {
     background-color: rgb(47, 255, 64);
-    color: white;
+    color: black;
     font-size: 1rem;
     border: none;
     border-radius: 0.3rem;
     padding: 0.5rem 2rem;
+    margin: 0.5rem;
 }
-input {
+.createEmployeeBox {
+    input {
     font-size: 1.2rem;
     margin: 0.5rem;
     padding: 1rem 1.5rem;
@@ -63,6 +65,8 @@ input {
     border-bottom: 0.3rem solid transparent;
     transition: all 0.3s;
 }
+}
+
 .EmployeesButton {
     display: flex;
     flex-direction: column;
@@ -79,4 +83,8 @@ button:hover {
 }
 button{
     transition: all 0.5s ease-in-out;
+}
+button:disabled {
+    background-color: #dddddd;
+    cursor: not-allowed;
 }
