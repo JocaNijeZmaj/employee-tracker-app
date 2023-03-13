@@ -110,11 +110,11 @@ export default function ManageTasks() {
       );
       const taskDoc = doc(db, "tasks", id);
       const updatedTasks = {
-        title: editTitle,
-        description: editDescription,
-        assign: editAssign,
-        dueDate: editDueDate,
-        isDone: editIsDone,
+        title: editTitle || task?.title,
+        description: editDescription || task?.description,
+        assign: editAssign || task?.assign,
+        dueDate: editDueDate || task?.dueDate,
+        isDone: editIsDone || task?.isDone,
       };
       await updateDoc(taskDoc, updatedTasks);
     };
@@ -129,8 +129,8 @@ export default function ManageTasks() {
         tasks.filter((val) => {
           return val.id != id;
         })
-      );
-      await deleteDoc(taskDoc);
+        );
+        await deleteDoc(taskDoc);
     };
 
 
@@ -166,8 +166,8 @@ export default function ManageTasks() {
                 setNewAssign(event.target.value);
               }}
             >
-              {employeeNames.map((name, key) => {
-              return <option key={name.id}>{name.firstName}</option>;})}
+              {employeeNames.map((name) => {
+              return <option key={name.id} value={name.firstName}>{name.firstName}</option>;})}
             </select>
             <input
               type="date"

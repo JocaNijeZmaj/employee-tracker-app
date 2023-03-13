@@ -71,7 +71,7 @@ export default function ManageEmployees() {
       };
 
         const someSmallValidation = (event:  React.ChangeEvent<HTMLInputElement>) => {
-          setNewLastName(event.target.value);
+          setNewFirstName(event.target.value);
           if (event.target.value.trim().length < 1) {
             setIsDisabled(true);
           } else {
@@ -157,7 +157,7 @@ export default function ManageEmployees() {
                 placeholder="Last name"
                 required
                 onChange={(event) => {
-                  setNewFirstName(event.target.value);
+                  setNewLastName(event.target.value);
                 }}
               />
               <input
