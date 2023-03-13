@@ -82,6 +82,18 @@ export default function ManageTasks() {
     //edit task
 
     const updateTask = async (id: string) => {
+      const task = tasks.find((task) => task.id === id);
+      if (
+        task?.title === editTitle &&
+        task.description === editDescription &&
+        task.assign === editAssign &&
+        task.dueDate === editDueDate &&
+        task.isDone === editIsDone
+      ){
+        console.log("No changes made");
+        return;
+      }
+
       handleShowEdit();
       setTasks(
         tasks.map((task) => {

@@ -38,7 +38,6 @@ export default function ManageEmployees() {
             setEmployees(
               data.docs.map((doc) => ({ ...doc.data(), id: doc.id } as Employee))
             );
-            console.log(data)
         }
         getEmployees()
     }, [])
@@ -82,33 +81,48 @@ export default function ManageEmployees() {
 
         //edit employee
 
-      const updateEmployee = async (id: string ) => {
-            handleShowEdit();
-            setEmployees(
-              employees.map((employee) => {
-                return employee.id === id
-                  ? {
-                      firstName: editFirstName,
-                      lastName: editLastName,
-                      email: editEmail,
-                      phoneNumber: editPhone,
-                      dob: editDob,
-                      salary: editSalary,
-                    }
-                  : employee;
-              })
-            );
-        const employeeDoc = doc(db, "employees", id);
-        const updatedEmployee = {
-          firstName: editFirstName,
-          lastName: editLastName,
-          email: editEmail,
-          phoneNumber: editPhone,
-          dob: editDob,
-          salary: editSalary,
-        };
-        await updateDoc(employeeDoc, updatedEmployee);
-      };
+     const updateEmployee = async (id: string) => {
+       const employee = employees.find((employee) => employee.id === id)
+       if (
+         employee?.firstName === editFirstName &&
+         employee.lastName === editLastName &&
+         employee.email === editEmail &&
+         employee.phoneNumber === editPhone &&
+         employee.dob === editDob &&
+         employee.salary === editSalary
+       ) {
+         console.log("No changes made");
+         return;
+       }
+
+       handleShowEdit();
+       setEmployees(
+         employees.map((employee) => {
+           return employee.id === id
+             ? {
+                 firstName: editFirstName || employee.firstName,
+                 lastName: editLastName || employee.lastName,
+                 email: editEmail || employee.email,
+                 phoneNumber: editPhone || employee.phoneNumber,
+                 dob: editDob || employee.dob,
+                 salary: editSalary || employee.salary,
+               }
+             : employee;
+         })
+       );
+
+       const employeeDoc = doc(db, "employees", id);
+       const updatedEmployee = {
+         firstName: editFirstName || employee?.firstName,
+         lastName: editLastName || employee?.lastName,
+         email: editEmail || employee?.email,
+         phoneNumber: editPhone || employee?.phoneNumber,
+         dob: editDob || employee?.dob,
+         salary: editSalary || employee?.salary,
+       };
+
+       await updateDoc(employeeDoc, updatedEmployee);
+     };
 
       const handleShowEdit = () => {
         setShowEdit((current) => !current);
