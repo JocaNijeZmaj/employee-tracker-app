@@ -3,13 +3,13 @@ import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "@firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCsotfVi77SQYF7GJkgTQWZYKc043bZj0s",
-  authDomain: "employee-tracker-4000.firebaseapp.com",
-  projectId: "employee-tracker-4000",
-  storageBucket: "employee-tracker-4000.appspot.com",
-  messagingSenderId: "875973330555",
-  appId: "1:875973330555:web:ba383e0c878056f7f504de",
-  measurementId: "G-S0XZML27ZW",
+  apiKey: "AIzaSyBjqFqRqE2CMYa6eA76ZVsMbMYA6lJE7yk",
+  authDomain: "employee-tracker-4.firebaseapp.com",
+  projectId: "employee-tracker-4",
+  storageBucket: "employee-tracker-4.appspot.com",
+  messagingSenderId: "182836212661",
+  appId: "1:182836212661:web:b4f201f9b1768606e0dffc",
+  measurementId: "G-42RBX8G4Z6",
 };
 
 const app = initializeApp(firebaseConfig);
