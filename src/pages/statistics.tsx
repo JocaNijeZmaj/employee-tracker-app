@@ -21,6 +21,7 @@ export default function Statistics() {
   const employeesCollectionRef = collection(db, "employees");
 
   useEffect(() => {
+    console.log('render')
     const getEmployees = async () => {
       const data = await getDocs(employeesCollectionRef);
       const employeesData = data.docs.map((doc) => {
@@ -46,7 +47,7 @@ export default function Statistics() {
       setEmployeeSalary(employeeSalaryData);
     };
     getEmployees();
-  }, [employeesCollectionRef]);
+  }, []);
 
   return (
     <div className="bar">
