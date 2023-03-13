@@ -13,7 +13,7 @@ export default function Statistics() {
     datasets: [
       {
         label: "Salary",
-        data: [1, 2, 3, 4],
+        data: [],
       },
     ],
   });
