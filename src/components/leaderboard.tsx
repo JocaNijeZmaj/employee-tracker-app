@@ -24,16 +24,18 @@ export default function Leaderboard() {
       getTasks();
     }, []);
 
+    //get top employee from tasks array
 useEffect(() => {
   setTopEmployees(
     tasks
+      .filter((task) => task.isDone)
       .map((task) => task.assign)
       .flat()
-      .reduce((name: any , assignee) => {
+      .reduce((name: any, assignee) => {
         name[assignee] = (name[assignee] || 0) + 1;
         return name;
-      }, {}) 
-      );
+      }, {})
+  );
       console.log(topEmployees)
 }, [tasks]);
 
