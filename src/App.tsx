@@ -16,7 +16,7 @@ function App() {
       <div className="App">
         <header>
           <h1>Employee Tracker 4000</h1>
-          <img src={logo} className='logo' />
+          <img src={logo} className='logo' alt='detective' />
           <nav>
             <NavLink to="/">Home</NavLink>
             <NavLink to="employees">Manage employees</NavLink>
