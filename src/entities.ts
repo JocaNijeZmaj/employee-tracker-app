@@ -15,3 +15,12 @@ export interface Task {
     dueDate: number,
     isDone: boolean
 }
+export interface SalaryData {
+  labels: string[];
+  datasets: [
+    {
+      label: string;
+      data: number[] | string[];
+    }
+  ];
+}

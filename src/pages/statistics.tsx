@@ -3,12 +3,14 @@ import "./statistics.scss";
 import { db } from "../firebase-config";
 import { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { Employee } from "../entities";
+import { Employee, SalaryData } from "../entities";
 import BarChart from "../components/BarChart";
+
+
 
 export default function Statistics() {
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [employeeSalary, setEmployeeSalary] = useState({
+  const [employeeSalary, setEmployeeSalary] = useState<SalaryData>({
     labels: ["name"],
     datasets: [
       {
@@ -33,7 +35,7 @@ export default function Statistics() {
       });
       setEmployees(employeesData);
 
-      const employeeSalaryData = {
+      const employeeSalaryData: SalaryData = {
         labels: employeesData.map(
           (employee) => `${employee.firstName} ${employee.lastName}`
         ),
