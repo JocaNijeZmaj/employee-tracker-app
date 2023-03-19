@@ -5,6 +5,7 @@ import ManageEmployees from './pages/manage-employees';
 import ManageTasks from './pages/manage-tasks';
 import Statistics from './pages/statistics';
 import Home from './pages/home';
+import logo from './assets/images/private-detective.png';
 
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
       <div className="App">
         <header>
           <h1>Employee Tracker 4000</h1>
-          <img className="logo" src="src\assets\private-detective.png" />
+          <img src={logo} className='logo' />
           <nav>
             <NavLink to="/">Home</NavLink>
             <NavLink to="employees">Manage employees</NavLink>
