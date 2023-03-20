@@ -1,5 +1,5 @@
 import React from 'react'
-import { Bar } from 'react-chartjs-2'
+import { Line, Pie } from 'react-chartjs-2'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,11 +8,14 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartData, ChartOptions
+  ChartData,
+  ChartOptions,
+  ArcElement,
 } from "chart.js";
 
 ChartJS.register(
   CategoryScale,
+  ArcElement,
   LinearScale,
   BarElement,
   Title,
@@ -20,15 +23,15 @@ ChartJS.register(
   Legend
 );
 
-interface BarProps {
-  options?: ChartOptions<"bar">;
-  chartData: ChartData<"bar">;
+interface PieProps {
+  options?: ChartOptions<"pie">;
+  chartData: ChartData<"pie">;
 }
 
-export default function LineChart({ options, chartData }: BarProps) {
+export default function PieChart({ chartData }: PieProps) {
   return (
     <div>
-      <Bar data={chartData} />
+      <Pie data={chartData} />
     </div>
   );
 }

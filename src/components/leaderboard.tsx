@@ -26,6 +26,7 @@ export default function Leaderboard() {
 
     //get top employee from tasks array
 useEffect(() => {
+  console.log('render')
   setTopEmployees(
     tasks
       .filter((task) => task.isDone)
